@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Support Ticket System</title>
+    <!-- External Stylesheet -->
+    <link rel="stylesheet" href="indexstylesheet.css">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+<body>
+
+    <!-- Header Section -->
+    <header class="header">
+        <div class="container">
+            <h1>Customer Support Ticket System</h1>
+            <p>Efficiently manage and resolve transport-related issues with ease.</p>
+        </div>
+    </header>
+
+    <!-- Main Content Section -->
+    <main class="main-content">
+        <div class="container">
+            <h2>Welcome to Our Platform</h2>
+            <p>Please select your role to proceed:</p>
+
+            <!-- Role Selection Buttons -->
+            <div class="role-buttons">
+                <button id="userBtn" class="btn">
+                    <i class="fas fa-user"></i> User Login
+                </button>
+                <button id="adminBtn" class="btn">
+                    <i class="fas fa-lock"></i> Admin Login
+                </button>
+                <button id="agentBtn" class="btn">
+                    <i class="fas fa-headset"></i> Agent Login
+                </button>
+            </div>
+
+            <!-- Description of Roles -->
+            <div class="role-description">
+                <div class="role">
+                    <h3><i class="fas fa-user"></i> User</h3>
+                    <p>Submit and track your transport-related issues. Get real-time updates on your tickets.</p>
+                </div>
+                <div class="role">
+                    <h3><i class="fas fa-lock"></i> Admin</h3>
+                    <p>Manage users, agents, and tickets. Access detailed reports and analytics.</p>
+                </div>
+                <div class="role">
+                    <h3><i class="fas fa-headset"></i> Agent</h3>
+                    <p>Resolve user tickets efficiently. Communicate with users and update ticket status.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer Section -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 Customer Support Ticket System. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript for Role Selection -->
+    <script>
+        // Redirect to respective login pages
+        document.getElementById('userBtn').addEventListener('click', function() {
+            window.location.href = 'userlogin.html';
+        });
+
+        document.getElementById('adminBtn').addEventListener('click', function() {
+            window.location.href = 'adminlogin.html';
+        });
+
+        document.getElementById('agentBtn').addEventListener('click', function() {
+            window.location.href = 'agentlogin.html';
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login - Customer Support Ticket System</title>
+    <!-- External Stylesheet -->
+    <link rel="stylesheet" href="loginstyle.css">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+<body>
+
+    <!-- Header Section -->
+    <header class="header">
+        <div class="container">
+            <h1>Customer Support Ticket System</h1>
+            <p>Efficiently manage and resolve transport-related issues with ease.</p>
+        </div>
+    </header>
+
+    <!-- Login Section -->
+    <section class="login-section">
+        <div class="container">
+            <h2>Admin Login</h2>
+            <p>Please enter your credentials to access the admin dashboard.</p>
+
+            <!-- Login Form -->
+            <div class="login-form">
+                <form id="adminLoginForm">
+                    <div class="form-group">
+                        <label for="adminUsername">Username</label>
+                        <input type="text" id="adminUsername" name="adminUsername" placeholder="Enter your username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="adminPassword">Password</label>
+                        <input type="password" id="adminPassword" name="adminPassword" placeholder="Enter your password" required>
+                    </div>
+                    <button type="submit" class="btn">
+                        <i class="fas fa-sign-in-alt"></i> Login
+                    </button>
+                </form>
+
+                <!-- Link to Admin Registration (if applicable) -->
+                <p class="register-link">
+                    New Admin? <a href="newadmin.html">Register Here</a>
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Section -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 Customer Support Ticket System. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript for Form Validation -->
+    <script>
+        document.getElementById('adminLoginForm').addEventListener('submit', function(event) {
+            const username = document.getElementById('adminUsername').value;
+            const password = document.getElementById('adminPassword').value;
+
+            // Basic validation
+            if (!username || !password) {
+                alert('Please fill in all fields.');
+                event.preventDefault();
+            }
+        });
+    </script>
+</body>
+</html>
