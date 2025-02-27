@@ -1,0 +1,185 @@
+/* General Styles */
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, #6a11cb, #2575fc); /* Soft Purple-Blue Gradient */
+    color: #222;
+    line-height: 1.6;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Header Styles */
+.header {
+    background: #162447; /* Deep Navy */
+    padding: 50px 0;
+    text-align: center;
+    border-bottom: 3px solid #1b74e4;
+}
+
+.header h1 {
+    font-size: 2.8rem;
+    font-weight: bold;
+    margin: 0;
+    color: #f8f9fa;
+}
+
+.header p {
+    font-size: 1.2rem;
+    margin: 10px 0 0;
+    color: #dcdcdc;
+}
+
+/* Ticket Section Styles */
+.ticket-section {
+    flex: 1;
+    padding: 40px 0;
+}
+
+.ticket-section h2 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #fff;
+    text-align: center;
+}
+
+.ticket-section p {
+    font-size: 1.1rem;
+    margin-bottom: 30px;
+    color: #f0f0f0;
+    text-align: center;
+}
+
+/* Form Styles */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #f8f9fa;
+    display: block;
+    margin-bottom: 8px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background: #f8f9fa;
+    color: #222;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    border-color: #1b74e4;
+    outline: none;
+    box-shadow: 0 0 5px rgba(27, 116, 228, 0.6);
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+    color: #555;
+}
+
+.form-group input[type="file"] {
+    padding: 8px;
+}
+
+/* Review Section Styles */
+.review-section {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 20px;
+}
+
+.review-section h3 {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+    color: #f8f9fa;
+}
+
+.review-section ul {
+    list-style: none;
+    padding: 0;
+}
+
+.review-section ul li {
+    margin-bottom: 10px;
+    font-size: 1rem;
+    color: #f8f9fa;
+}
+
+.review-section ul li strong {
+    color: #fff;
+}
+
+/* Button Styles */
+.btn {
+    width: 100%;
+    padding: 12px;
+    background: #1b74e4;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.btn:hover {
+    background: #125abe;
+    transform: translateY(-3px);
+}
+
+/* Footer Styles */
+.footer {
+    background: #162447; /* Deep Navy */
+    padding: 20px 0;
+    text-align: center;
+    border-top: 3px solid #1b74e4;
+}
+
+.footer p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #dcdcdc;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .header h1 {
+        font-size: 2.3rem;
+    }
+
+    .header p {
+        font-size: 1rem;
+    }
+
+    .ticket-section h2 {
+        font-size: 2rem;
+    }
+
+    .ticket-section p {
+        font-size: 1rem;
+    }
+}

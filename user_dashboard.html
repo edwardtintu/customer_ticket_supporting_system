@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Ticket Management - Customer Support Ticket System</title>
+    <!-- External Stylesheet -->
+    <link rel="stylesheet" href="user_dash.css">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+<body>
+
+    <!-- Header Section -->
+    <header class="header">
+        <div class="container">
+            <h1>Customer Support Ticket System</h1>
+            <p>Report and manage your transport-related issues with ease.</p>
+        </div>
+    </header>
+
+    <!-- Ticket Management Section -->
+    <section class="ticket-section">
+        <div class="container">
+            <h2>Report a Ticket Issue</h2>
+            <p>Please select your transport type and provide details about the issue.</p>
+
+            <!-- Transport Selection -->
+            <div class="form-group">
+                <label for="transportType">Transport Type</label>
+                <select id="transportType" name="transportType" required>
+                    <option value="" disabled selected>Select Transport Type</option>
+                    <option value="bus">Bus</option>
+                    <option value="train">Train</option>
+                </select>
+            </div>
+
+            <!-- Dynamic Form Fields -->
+            <div id="busForm" class="transport-form" style="display: none;">
+                <h3>Bus Ticket Issue</h3>
+                <form id="busTicketForm">
+                    <!-- Bus-Specific Fields -->
+                    <div class="form-group">
+                        <label for="busTicketNumber">Bus Ticket Number</label>
+                        <input type="text" id="busTicketNumber" name="busTicketNumber" placeholder="Enter your bus ticket number" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="busIssueType">Issue Type</label>
+                        <select id="busIssueType" name="busIssueType" required>
+                            <option value="" disabled selected>Select Issue Type</option>
+                            <option value="delay">Bus Delay</option>
+                            <option value="cancellation">Bus Cancellation</option>
+                            <option value="lostItem">Lost Item</option>
+                            <option value="overcrowding">Overcrowding</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="busIncidentDate">Date of Incident</label>
+                        <input type="date" id="busIncidentDate" name="busIncidentDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="busDescription">Description</label>
+                        <textarea id="busDescription" name="busDescription" rows="4" placeholder="Describe the issue" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="busEvidence">Upload Evidence</label>
+                        <input type="file" id="busEvidence" name="busEvidence" accept="image/*, .pdf">
+                    </div>
+                </form>
+            </div>
+
+            <div id="trainForm" class="transport-form" style="display: none;">
+                <h3>Train Ticket Issue</h3>
+                <form id="trainTicketForm">
+                    <!-- Train-Specific Fields -->
+                    <div class="form-group">
+                        <label for="trainTicketNumber">Train Ticket Number</label>
+                        <input type="text" id="trainTicketNumber" name="trainTicketNumber" placeholder="Enter your train ticket number" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="trainIssueType">Issue Type</label>
+                        <select id="trainIssueType" name="trainIssueType" required>
+                            <option value="" disabled selected>Select Issue Type</option>
+                            <option value="delay">Train Delay</option>
+                            <option value="cancellation">Train Cancellation</option>
+                            <option value="lostItem">Lost Item</option>
+                            <option value="overcrowding">Overcrowding</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="trainIncidentDate">Date of Incident</label>
+                        <input type="date" id="trainIncidentDate" name="trainIncidentDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="trainDescription">Description</label>
+                        <textarea id="trainDescription" name="trainDescription" rows="4" placeholder="Describe the issue" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="trainEvidence">Upload Evidence</label>
+                        <input type="file" id="trainEvidence" name="trainEvidence" accept="image/*, .pdf">
+                    </div>
+                </form>
+            </div>
+
+            <!-- Review Section -->
+            <div id="reviewSection" class="review-section" style="display: none;">
+                <h3>Review Your Submission</h3>
+                <div id="reviewContent"></div>
+                <button type="button" class="btn" id="submitBtn">Submit</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Section -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 Customer Support Ticket System. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript for Dynamic Form and Review -->
+    <script>
+      // Show relevant form based on transport selection
+const transportType = document.getElementById('transportType');
+const busForm = document.getElementById('busForm');
+const trainForm = document.getElementById('trainForm');
+const reviewSection = document.getElementById('reviewSection');
+const reviewContent = document.getElementById('reviewContent');
+const submitBtn = document.getElementById('submitBtn');
+
+transportType.addEventListener('change', function () {
+    if (transportType.value === 'bus') {
+        busForm.style.display = 'block';
+        trainForm.style.display = 'none';
+    } else if (transportType.value === 'train') {
+        trainForm.style.display = 'block';
+        busForm.style.display = 'none';
+    }
+    reviewSection.style.display = 'none';
+});
+
+// Show Review Section and Submit Button Properly
+function showReview() {
+    const formData = transportType.value === 'bus'
+        ? new FormData(document.getElementById('busTicketForm'))
+        : new FormData(document.getElementById('trainTicketForm'));
+
+    let reviewHTML = '<ul>';
+    for (const [key, value] of formData.entries()) {
+        reviewHTML += `<li><strong>${key}:</strong> ${value}</li>`;
+    }
+    reviewHTML += '</ul>';
+    
+    reviewContent.innerHTML = reviewHTML;
+    reviewSection.style.display = 'block';
+    submitBtn.style.display = 'block';  // Ensure the submit button is visible
+}
+
+// Make sure the submit button is always visible
+submitBtn.style.display = 'block';
+submitBtn.addEventListener('click', showReview);
+
+        
+    </script>
+</body>
+</html>
