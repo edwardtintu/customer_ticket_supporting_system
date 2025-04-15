@@ -3,26 +3,86 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Ticket Management - Customer Support Ticket System</title>
+    <title>User Dashboard - Customer Support Ticket System</title>
     <!-- External Stylesheet -->
     <link rel="stylesheet" href="user_dash.css">
     <!-- Font Awesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 </head>
 <body>
-
     <!-- Header Section -->
     <header class="header">
         <div class="container">
             <h1>Customer Support Ticket System</h1>
             <p>Report and manage your transport-related issues with ease.</p>
+            <div class="user-info">
+                <span><i class="fas fa-user"></i> Welcome, <span id="username">User</span></span>
+                <button id="logoutBtn" class="btn-logout"><i class="fas fa-sign-out-alt"></i> Logout</button>
+            </div>
         </div>
     </header>
 
-    <!-- Ticket Management Section -->
-    <section class="ticket-section">
+    <!-- Navigation Tabs -->
+    <nav class="dashboard-nav">
         <div class="container">
-            <h2>Report a Ticket Issue</h2>
+            <ul class="nav-tabs">
+                <li class="nav-item active" data-target="dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</li>
+                <li class="nav-item" data-target="new-ticket"><i class="fas fa-plus-circle"></i> New Ticket</li>
+                <li class="nav-item" data-target="my-tickets"><i class="fas fa-ticket-alt"></i> My Tickets</li>
+                <li class="nav-item" data-target="profile"><i class="fas fa-user-cog"></i> Profile</li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Dashboard Overview Section -->
+    <section id="dashboard" class="dashboard-section active">
+        <div class="container">
+            <h2>Dashboard Overview</h2>
+            
+            <div class="stats-container">
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-ticket-alt"></i></div>
+                    <div class="stat-info">
+                        <h3>Total Tickets</h3>
+                        <p id="totalTickets">0</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-spinner"></i></div>
+                    <div class="stat-info">
+                        <h3>Open Tickets</h3>
+                        <p id="openTickets">0</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-clock"></i></div>
+                    <div class="stat-info">
+                        <h3>In Progress</h3>
+                        <p id="inProgressTickets">0</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
+                    <div class="stat-info">
+                        <h3>Resolved</h3>
+                        <p id="resolvedTickets">0</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="recent-activity">
+                <h3>Recent Activity</h3>
+                <div class="activity-list" id="recentActivity">
+                    <p>No recent activity</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- New Ticket Section -->
+    <section id="new-ticket" class="dashboard-section">
+        <div class="container" >
+            <h2>Create a New Ticket</h2>
             <p>Please select your transport type and provide details about the issue.</p>
 
             <!-- Transport Selection -->
@@ -66,6 +126,9 @@
                         <label for="busEvidence">Upload Evidence</label>
                         <input type="file" id="busEvidence" name="busEvidence" accept="image/*, .pdf">
                     </div>
+                    <div class="form-group">
+                        <button type="button" class="btn submit-ticket" id="submitBusTicket">Submit Ticket</button>
+                    </div>
                 </form>
             </div>
 
@@ -99,6 +162,9 @@
                         <label for="trainEvidence">Upload Evidence</label>
                         <input type="file" id="trainEvidence" name="trainEvidence" accept="image/*, .pdf">
                     </div>
+                    <div class="form-group">
+                        <button type="button" class="btn submit-ticket" id="submitTrainTicket">Submit Ticket</button>
+                    </div>
                 </form>
             </div>
 
@@ -106,7 +172,126 @@
             <div id="reviewSection" class="review-section" style="display: none;">
                 <h3>Review Your Submission</h3>
                 <div id="reviewContent"></div>
-                <button type="button" class="btn" id="submitBtn">Submit</button>
+                <div class="button-group">
+                    <button type="button" class="btn btn-edit" id="editBtn">Edit</button>
+                    <button type="button" class="btn btn-confirm" id="confirmBtn">Confirm & Submit</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- My Tickets Section -->
+    <section id="my-tickets" class="dashboard-section">
+        <div class="container">
+            <h2>My Tickets</h2>
+            
+            <div class="ticket-filters">
+                <div class="filter-group">
+                    <label for="statusFilter">Filter by Status:</label>
+                    <select id="statusFilter">
+                        <option value="all">All Tickets</option>
+                        <option value="open">Open</option>
+                        <option value="in-progress">In Progress</option>
+                        <option value="resolved">Resolved</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="searchTicket">Search:</label>
+                    <input type="text" id="searchTicket" placeholder="Search by ticket number or keywords">
+                </div>
+            </div>
+            
+            <div class="ticket-list" id="ticketList">
+                <!-- Ticket items will be dynamically populated here -->
+                <div class="no-tickets-message">You haven't submitted any tickets yet.</div>
+                
+                <!-- Sample Ticket Item (for demonstration) -->
+                <!--
+                <div class="ticket-item" data-ticket-id="T12345">
+                    <div class="ticket-header">
+                        <span class="ticket-number">Ticket #T12345</span>
+                        <span class="ticket-status status-open">Open</span>
+                    </div>
+                    <div class="ticket-content">
+                        <h4 class="ticket-title">Bus Delay on Route 42</h4>
+                        <p class="ticket-description">The bus was 30 minutes late...</p>
+                        <div class="ticket-meta">
+                            <span class="ticket-date"><i class="far fa-calendar-alt"></i> 01/15/2024</span>
+                            <span class="ticket-transport"><i class="fas fa-bus"></i> Bus</span>
+                        </div>
+                    </div>
+                    <div class="ticket-actions">
+                        <button class="btn-view" data-ticket-id="T12345"><i class="fas fa-eye"></i> View</button>
+                    </div>
+                </div>
+                -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Ticket Detail Modal -->
+    <div id="ticketDetailModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <div id="ticketDetailContent">
+                <!-- Ticket details will be populated here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Profile Section -->
+    <section id="profile" class="dashboard-section">
+        <div class="container">
+            <h2>My Profile</h2>
+            
+            <div class="profile-container">
+                <div class="profile-info">
+                    <form id="profileForm">
+                        <div class="form-group">
+                            <label for="fullName">Full Name</label>
+                            <input type="text" id="fullName" name="fullName" placeholder="Your full name">
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" name="email" placeholder="Your email address">
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone Number</label>
+                            <input type="tel" id="phone" name="phone" placeholder="Your phone number">
+                        </div>
+                        <div class="form-group">
+                            <label for="preferredContact">Preferred Contact Method</label>
+                            <select id="preferredContact" name="preferredContact">
+                                <option value="email">Email</option>
+                                <option value="phone">Phone</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <button type="button" class="btn" id="updateProfileBtn">Update Profile</button>
+                        </div>
+                    </form>
+                </div>
+                
+                <div class="change-password">
+                    <h3>Change Password</h3>
+                    <form id="passwordForm">
+                        <div class="form-group">
+                            <label for="currentPassword">Current Password</label>
+                            <input type="password" id="currentPassword" name="currentPassword" placeholder="Enter current password">
+                        </div>
+                        <div class="form-group">
+                            <label for="newPassword">New Password</label>
+                            <input type="password" id="newPassword" name="newPassword" placeholder="Enter new password">
+                        </div>
+                        <div class="form-group">
+                            <label for="confirmPassword">Confirm New Password</label>
+                            <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm new password">
+                        </div>
+                        <div class="form-group">
+                            <button type="button" class="btn" id="changePasswordBtn">Change Password</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </section>
@@ -118,49 +303,322 @@
         </div>
     </footer>
 
-    <!-- JavaScript for Dynamic Form and Review -->
+    <!-- JavaScript for Dynamic Dashboard -->
     <script>
-      // Show relevant form based on transport selection
-const transportType = document.getElementById('transportType');
-const busForm = document.getElementById('busForm');
-const trainForm = document.getElementById('trainForm');
-const reviewSection = document.getElementById('reviewSection');
-const reviewContent = document.getElementById('reviewContent');
-const submitBtn = document.getElementById('submitBtn');
+        // Tab Navigation
+        const navItems = document.querySelectorAll('.nav-item');
+        const dashboardSections = document.querySelectorAll('.dashboard-section');
 
-transportType.addEventListener('change', function () {
-    if (transportType.value === 'bus') {
-        busForm.style.display = 'block';
-        trainForm.style.display = 'none';
-    } else if (transportType.value === 'train') {
-        trainForm.style.display = 'block';
-        busForm.style.display = 'none';
-    }
-    reviewSection.style.display = 'none';
-});
+        navItems.forEach(item => {
+            item.addEventListener('click', function() {
+                // Remove active class from all tabs and sections
+                navItems.forEach(tab => tab.classList.remove('active'));
+                dashboardSections.forEach(section => section.classList.remove('active'));
+                
+                // Add active class to clicked tab
+                this.classList.add('active');
+                
+                // Show corresponding section
+                const targetSection = document.getElementById(this.getAttribute('data-target'));
+                if (targetSection) {
+                    targetSection.classList.add('active');
+                }
+            });
+        });
 
-// Show Review Section and Submit Button Properly
-function showReview() {
-    const formData = transportType.value === 'bus'
-        ? new FormData(document.getElementById('busTicketForm'))
-        : new FormData(document.getElementById('trainTicketForm'));
+        // Show relevant form based on transport selection
+        const transportType = document.getElementById('transportType');
+        const busForm = document.getElementById('busForm');
+        const trainForm = document.getElementById('trainForm');
+        const reviewSection = document.getElementById('reviewSection');
+        const reviewContent = document.getElementById('reviewContent');
+        const editBtn = document.getElementById('editBtn');
+        const confirmBtn = document.getElementById('confirmBtn');
 
-    let reviewHTML = '<ul>';
-    for (const [key, value] of formData.entries()) {
-        reviewHTML += `<li><strong>${key}:</strong> ${value}</li>`;
-    }
-    reviewHTML += '</ul>';
-    
-    reviewContent.innerHTML = reviewHTML;
-    reviewSection.style.display = 'block';
-    submitBtn.style.display = 'block';  // Ensure the submit button is visible
-}
+        transportType.addEventListener('change', function () {
+            if (transportType.value === 'bus') {
+                busForm.style.display = 'block';
+                trainForm.style.display = 'none';
+            } else if (transportType.value === 'train') {
+                trainForm.style.display = 'block';
+                busForm.style.display = 'none';
+            }
+            reviewSection.style.display = 'none';
+        });
 
-// Make sure the submit button is always visible
-submitBtn.style.display = 'block';
-submitBtn.addEventListener('click', showReview);
+        // Submit Bus Ticket
+        document.getElementById('submitBusTicket').addEventListener('click', function() {
+            showReview('bus');
+        });
 
-        
+        // Submit Train Ticket
+        document.getElementById('submitTrainTicket').addEventListener('click', function() {
+            showReview('train');
+        });
+
+        // Show Review Section
+        function showReview(type) {
+            const formId = type === 'bus' ? 'busTicketForm' : 'trainTicketForm';
+            const form = document.getElementById(formId);
+            const formData = new FormData(form);
+            
+            let reviewHTML = '<ul class="review-list">';
+            for (const [key, value] of formData.entries()) {
+                if (value instanceof File && value.name) {
+                    reviewHTML += `<li><strong>${formatFieldName(key)}:</strong> ${value.name}</li>`;
+                } else if (value) {
+                    reviewHTML += `<li><strong>${formatFieldName(key)}:</strong> ${value}</li>`;
+                }
+            }
+            reviewHTML += '</ul>';
+            
+            reviewContent.innerHTML = reviewHTML;
+            reviewSection.style.display = 'block';
+        }
+
+        // Format field names for review
+        function formatFieldName(fieldName) {
+            return fieldName
+                .replace(/([A-Z])/g, ' $1') // Add space before capital letters
+                .replace(/^./, str => str.toUpperCase()) // Capitalize first letter
+                .replace(/(bus|train)/i, '') // Remove transport type prefix
+                .trim();
+        }
+
+        // Edit button functionality
+        editBtn.addEventListener('click', function() {
+            reviewSection.style.display = 'none';
+        });
+
+        // Confirm button functionality 
+        confirmBtn.addEventListener('click', function() {
+            // Here you would typically submit the form data to your backend
+            alert('Ticket submitted successfully!');
+            
+            // Reset forms and show success message
+            document.getElementById('busTicketForm').reset();
+            document.getElementById('trainTicketForm').reset();
+            transportType.value = '';
+            busForm.style.display = 'none';
+            trainForm.style.display = 'none';
+            reviewSection.style.display = 'none';
+            
+            // Go back to tickets list
+            document.querySelector('[data-target="my-tickets"]').click();
+            
+            // For demo purposes, add a dummy ticket to the list
+            addDummyTicket();
+            updateTicketCounters();
+        });
+
+        // For demonstration: Add a dummy ticket to the list
+        function addDummyTicket() {
+            const ticketList = document.getElementById('ticketList');
+            const noTicketsMsg = document.querySelector('.no-tickets-message');
+            
+            if (noTicketsMsg) {
+                noTicketsMsg.style.display = 'none';
+            }
+            
+            const ticketId = 'T' + Math.floor(Math.random() * 10000);
+            const transportType = Math.random() > 0.5 ? 'bus' : 'train';
+            const status = ['open', 'in-progress', 'resolved'][Math.floor(Math.random() * 3)];
+            const statusText = status.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase());
+            
+            const ticketHTML = `
+                <div class="ticket-item" data-ticket-id="${ticketId}" data-status="${status}">
+                    <div class="ticket-header">
+                        <span class="ticket-number">Ticket #${ticketId}</span>
+                        <span class="ticket-status status-${status}">${statusText}</span>
+                    </div>
+                    <div class="ticket-content">
+                        <h4 class="ticket-title">${transportType === 'bus' ? 'Bus' : 'Train'} Issue Report</h4>
+                        <p class="ticket-description">This is a sample ticket description for demonstration purposes.</p>
+                        <div class="ticket-meta">
+                            <span class="ticket-date"><i class="far fa-calendar-alt"></i> ${new Date().toLocaleDateString()}</span>
+                            <span class="ticket-transport"><i class="fas fa-${transportType}"></i> ${transportType === 'bus' ? 'Bus' : 'Train'}</span>
+                        </div>
+                    </div>
+                    <div class="ticket-actions">
+                        <button class="btn-view" data-ticket-id="${ticketId}"><i class="fas fa-eye"></i> View</button>
+                    </div>
+                </div>
+            `;
+            
+            ticketList.insertAdjacentHTML('afterbegin', ticketHTML);
+            
+            // Add event listener to the view button
+            document.querySelector(`.btn-view[data-ticket-id="${ticketId}"]`).addEventListener('click', function() {
+                openTicketDetail(this.getAttribute('data-ticket-id'));
+            });
+        }
+
+        // Open ticket detail modal
+        function openTicketDetail(ticketId) {
+            const modal = document.getElementById('ticketDetailModal');
+            const content = document.getElementById('ticketDetailContent');
+            
+            // Generate dummy details for demo
+            const status = ['Open', 'In Progress', 'Resolved'][Math.floor(Math.random() * 3)];
+            const transportType = Math.random() > 0.5 ? 'Bus' : 'Train';
+            const date = new Date().toLocaleDateString();
+            
+            const detailHTML = `
+                <h3>Ticket #${ticketId}</h3>
+                <div class="ticket-detail-header">
+                    <span class="ticket-detail-status status-${status.toLowerCase().replace(' ', '-')}">Status: ${status}</span>
+                    <span class="ticket-detail-date">Submitted: ${date}</span>
+                </div>
+                <div class="ticket-detail-body">
+                    <div class="detail-section">
+                        <h4>Issue Details</h4>
+                        <p><strong>Transport Type:</strong> ${transportType}</p>
+                        <p><strong>Issue Type:</strong> ${transportType === 'Bus' ? 'Bus Delay' : 'Train Cancellation'}</p>
+                        <p><strong>Date of Incident:</strong> ${date}</p>
+                        <p><strong>Description:</strong> This is a sample ticket description for demonstration purposes. In a real application, this would contain the actual details of the reported issue.</p>
+                    </div>
+                    <div class="detail-section">
+                        <h4>Conversation</h4>
+                        <div class="conversation-thread">
+                            <div class="message customer-message">
+                                <div class="message-header">
+                                    <span class="message-sender">You</span>
+                                    <span class="message-time">${date}</span>
+                                </div>
+                                <div class="message-body">
+                                    Initial report submitted.
+                                </div>
+                            </div>
+                            ${status !== 'Open' ? `
+                            <div class="message agent-message">
+                                <div class="message-header">
+                                    <span class="message-sender">Support Agent</span>
+                                    <span class="message-time">${date}</span>
+                                </div>
+                                <div class="message-body">
+                                    Thank you for your report. We're looking into this issue and will update you shortly.
+                                </div>
+                            </div>
+                            ` : ''}
+                        </div>
+                        <div class="reply-section">
+                            <h5>Add Reply</h5>
+                            <textarea class="reply-textarea" placeholder="Type your message here..."></textarea>
+                            <button class="btn reply-btn">Send Reply</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            content.innerHTML = detailHTML;
+            modal.style.display = 'block';
+            
+            // Add event listener to close modal
+            document.querySelector('.close-modal').addEventListener('click', function() {
+                modal.style.display = 'none';
+            });
+            
+            // Close modal when clicking outside
+            window.addEventListener('click', function(event) {
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+        }
+
+        // Filter tickets by status
+        document.getElementById('statusFilter').addEventListener('change', function() {
+            const status = this.value;
+            const tickets = document.querySelectorAll('.ticket-item');
+            
+            tickets.forEach(ticket => {
+                if (status === 'all' || ticket.getAttribute('data-status') === status) {
+                    ticket.style.display = 'block';
+                } else {
+                    ticket.style.display = 'none';
+                }
+            });
+        });
+
+        // Search tickets
+        document.getElementById('searchTicket').addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            const tickets = document.querySelectorAll('.ticket-item');
+            
+            tickets.forEach(ticket => {
+                const ticketText = ticket.textContent.toLowerCase();
+                if (ticketText.includes(searchTerm)) {
+                    ticket.style.display = 'block';
+                } else {
+                    ticket.style.display = 'none';
+                }
+            });
+        });
+
+        // Update ticket counters
+        function updateTicketCounters() {
+            // For demo purposes, we'll use random numbers
+            document.getElementById('totalTickets').textContent = Math.floor(Math.random() * 10) + 1;
+            document.getElementById('openTickets').textContent = Math.floor(Math.random() * 3) + 1;
+            document.getElementById('inProgressTickets').textContent = Math.floor(Math.random() * 3);
+            document.getElementById('resolvedTickets').textContent = Math.floor(Math.random() * 5);
+            
+            // Add some recent activity
+            const recentActivity = document.getElementById('recentActivity');
+            const activities = [
+                'Your ticket #T1234 has been updated by an agent.',
+                'Ticket #T5678 status changed to "Resolved".',
+                'You created a new ticket #T9012.'
+            ];
+            
+            let activityHTML = '';
+            activities.forEach(activity => {
+                activityHTML += `<div class="activity-item">${activity}</div>`;
+            });
+            
+            recentActivity.innerHTML = activityHTML;
+        }
+
+        // Profile update functionality
+        document.getElementById('updateProfileBtn').addEventListener('click', function() {
+            alert('Profile updated successfully!');
+        });
+
+        // Password change functionality
+        document.getElementById('changePasswordBtn').addEventListener('click', function() {
+            const newPass = document.getElementById('newPassword').value;
+            const confirmPass = document.getElementById('confirmPassword').value;
+            
+            if (newPass !== confirmPass) {
+                alert('New passwords do not match!');
+            } else {
+                alert('Password changed successfully!');
+                document.getElementById('passwordForm').reset();
+            }
+        });
+
+        // Initialize the dashboard with some demo data
+        window.addEventListener('load', function() {
+            // Set username
+            document.getElementById('username').textContent = 'Sakthi';
+            
+            // Add some dummy tickets
+            for (let i = 0; i < 3; i++) {
+                addDummyTicket();
+            }
+            
+            // Update counters
+            updateTicketCounters();
+            
+            // Set some profile data
+            document.getElementById('fullName').value = 'Sakthi';
+            document.getElementById('email').value = 'sakthi@gmail.com';
+            document.getElementById('phone').value = '9840223670';
+        });
+        document.getElementById('logoutBtn').addEventListener('click', function() {
+            // Redirect to login page
+            window.location.href = 'userlogin.html';
+        });
     </script>
 </body>
 </html>

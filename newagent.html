@@ -20,42 +20,61 @@
     </header>
 
     <!-- Registration Section -->
-    <section class="login-section">
+    <section class="registration-section">
         <div class="container">
             <h2>Agent Registration</h2>
             <p>Please fill in the details to create a new agent account.</p>
 
+            <!-- Display error message if exists -->
+            <?php if (isset($_GET['error'])): ?>
+                <div class="error-message" style="color: red; margin-bottom: 15px;">
+                    <?php echo htmlspecialchars($_GET['error']); ?>
+                </div>
+            <?php endif; ?>
+
             <!-- Registration Form -->
-            <div class="login-form">
-                <form id="agentRegistrationForm">
+            <div class="registration-form">
+                <form id="agentRegistrationForm" action="register_agent.php" method="POST">
                     <!-- Full Name -->
                     <div class="form-group">
                         <label for="agentFullName">Full Name</label>
-                        <input type="text" id="agentFullName" name="agentFullName" placeholder="Enter your full name" required>
+                        <input type="text" id="agentFullName" name="fullName" placeholder="Enter your full name" required>
                     </div>
 
                     <!-- Email -->
                     <div class="form-group">
                         <label for="agentEmail">Email Address</label>
-                        <input type="email" id="agentEmail" name="agentEmail" placeholder="Enter your email" required>
+                        <input type="email" id="agentEmail" name="email" placeholder="Enter your email" required>
                     </div>
 
                     <!-- Phone Number -->
                     <div class="form-group">
                         <label for="agentPhone">Phone Number</label>
-                        <input type="tel" id="agentPhone" name="agentPhone" placeholder="Enter your phone number" required>
+                        <input type="tel" id="agentPhone" name="phone" placeholder="Enter your phone number" required>
+                    </div>
+
+                    <!-- Username -->
+                    <div class="form-group">
+                        <label for="agentUsername">Username</label>
+                        <input type="text" id="agentUsername" name="username" placeholder="Choose a username" required>
                     </div>
 
                     <!-- Password -->
                     <div class="form-group">
                         <label for="agentPassword">Password</label>
-                        <input type="password" id="agentPassword" name="agentPassword" placeholder="Create a password" required>
+                        <input type="password" id="agentPassword" name="password" placeholder="Create a password" required>
                     </div>
 
                     <!-- Confirm Password -->
                     <div class="form-group">
                         <label for="agentConfirmPassword">Confirm Password</label>
-                        <input type="password" id="agentConfirmPassword" name="agentConfirmPassword" placeholder="Confirm your password" required>
+                        <input type="password" id="agentConfirmPassword" name="confirmPassword" placeholder="Confirm your password" required>
+                    </div>
+
+                    <!-- Admin Key (for verification) -->
+                    <div class="form-group">
+                        <label for="adminKey">Admin Verification Key</label>
+                        <input type="password" id="adminKey" name="adminKey" placeholder="Enter admin verification key" required>
                     </div>
 
                     <!-- Submit Button -->
@@ -87,8 +106,8 @@
 
             // Check if passwords match
             if (password !== confirmPassword) {
-                alert('Passwords do not match. Please try again.');
                 event.preventDefault();
+                alert('Passwords do not match. Please try again.');
             }
         });
     </script>

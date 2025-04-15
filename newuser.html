@@ -25,9 +25,16 @@
             <h2>User Registration</h2>
             <p>Please fill in the details to create a new user account.</p>
 
+            <!-- Display error message if exists -->
+            <?php if (isset($_GET['error'])): ?>
+                <div class="error-message" style="color: red; margin-bottom: 15px;">
+                    <?php echo htmlspecialchars($_GET['error']); ?>
+                </div>
+            <?php endif; ?>
+
             <!-- Registration Form -->
             <div class="registration-form">
-                <form id="userRegistrationForm">
+                <form id="userRegistrationForm" action="register_process.php" method="POST">
                     <!-- Full Name -->
                     <div class="form-group">
                         <label for="fullName">Full Name</label>
@@ -44,6 +51,12 @@
                     <div class="form-group">
                         <label for="phone">Phone Number</label>
                         <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" required>
+                    </div>
+
+                    <!-- Username -->
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <input type="text" id="username" name="username" placeholder="Choose a username" required>
                     </div>
 
                     <!-- Password -->
@@ -87,8 +100,8 @@
 
             // Check if passwords match
             if (password !== confirmPassword) {
-                alert('Passwords do not match. Please try again.');
                 event.preventDefault();
+                alert('Passwords do not match. Please try again.');
             }
         });
     </script>

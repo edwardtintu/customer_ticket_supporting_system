@@ -8,18 +8,12 @@ body {
     line-height: 1.6;
 }
 
-.container {
-    width: 90%;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-}
 
 /* Header Styles */
 .header {
     background: linear-gradient(135deg, #343a40, #1a1a1a);
     color: #fff;
-    padding: 60px 0;
+    padding: 20px 0;
     text-align: center;
 }
 
@@ -37,7 +31,7 @@ body {
 
 /* Main Content Styles */
 .main-content {
-    padding: 40px 0;
+    padding: 10px 0;
     text-align: center;
 }
 
@@ -90,11 +84,12 @@ body {
     justify-content: center;
     gap: 30px;
     flex-wrap: wrap;
+    height: 175px;
 }
 
 .role {
     background: #fff;
-    padding: 20px;
+    padding: 10px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     width: 300px;

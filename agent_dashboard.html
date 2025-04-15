@@ -3,135 +3,427 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agent Dashboard - Ticket Management</title>
+    <title>Agent Dashboard - Customer Support Ticket System</title>
+    <!-- External Stylesheet -->
     <link rel="stylesheet" href="agent_dash.css">
+    <!-- Font Awesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 </head>
 <body>
-
-    <!-- Header -->
+    <!-- Header Section -->
     <header class="header">
         <div class="container">
-            <h1>Agent Dashboard - Ticket Management</h1>
-            <p>Handle and resolve customer transport issues efficiently.</p>
+            <h1>Customer Support Ticket System</h1>
+            <p>Manage and resolve customer tickets efficiently.</p>
+            <div class="user-info">
+                <span><i class="fas fa-user"></i> Welcome, <span id="username">Agent</span></span>
+                <button id="logoutBtn" class="btn-logout"><i class="fas fa-sign-out-alt"></i> Logout</button>
+            </div>
         </div>
     </header>
 
-    <!-- Ticket Management Panel -->
-    <section class="agent-panel">
+    <!-- Navigation Tabs -->
+    <nav class="dashboard-nav">
         <div class="container">
-            <h2>Assigned Tickets</h2>
+            <ul class="nav-tabs">
+                <li class="nav-item active" data-target="dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</li>
+                <li class="nav-item" data-target="tickets"><i class="fas fa-ticket-alt"></i> Tickets</li>
+                <li class="nav-item" data-target="profile"><i class="fas fa-user-cog"></i> Profile</li>
+            </ul>
+        </div>
+    </nav>
 
-            <!-- Filter Options -->
-            <div class="filters">
-                <label for="filterType">Filter by Transport Type:</label>
-                <select id="filterType">
-                    <option value="all">All</option>
-                    <option value="bus">Bus</option>
-                    <option value="train">Train</option>
-                </select>
-
-                <label for="filterStatus">Filter by Status:</label>
-                <select id="filterStatus">
-                    <option value="all">All</option>
-                    <option value="pending">Pending</option>
-                    <option value="inProgress">In Progress</option>
-                    <option value="resolved">Resolved</option>
-                </select>
+    <!-- Dashboard Overview Section -->
+    <section id="dashboard" class="dashboard-section active">
+        <div class="container">
+            <h2>Dashboard Overview</h2>
+            
+            <div class="stats-container">
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-ticket-alt"></i></div>
+                    <div class="stat-info">
+                        <h3>Total Tickets</h3>
+                        <p id="totalTickets">0</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-spinner"></i></div>
+                    <div class="stat-info">
+                        <h3>Open Tickets</h3>
+                        <p id="openTickets">0</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-clock"></i></div>
+                    <div class="stat-info">
+                        <h3>In Progress</h3>
+                        <p id="inProgressTickets">0</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
+                    <div class="stat-info">
+                        <h3>Resolved</h3>
+                        <p id="resolvedTickets">0</p>
+                    </div>
+                </div>
             </div>
-
-            <!-- Ticket List Table -->
-            <table class="ticket-table">
-                <thead>
-                    <tr>
-                        <th>Ticket ID</th>
-                        <th>Transport Type</th>
-                        <th>Issue Type</th>
-                        <th>Description</th>
-                        <th>Status</th>
-                        <th>Response</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody id="ticketList">
-                    <!-- Dynamic Ticket Entries Here -->
-                </tbody>
-            </table>
+            
+            <div class="recent-activity">
+                <h3>Recent Activity</h3>
+                <div class="activity-list" id="recentActivity">
+                    <p>No recent activity</p>
+                </div>
+            </div>
         </div>
     </section>
 
-    <!-- Footer -->
+    <!-- Tickets Section -->
+    <section id="tickets" class="dashboard-section">
+        <div class="container">
+            <h2>Manage Tickets</h2>
+            
+            <div class="ticket-filters">
+                <div class="filter-group">
+                    <label for="statusFilter">Filter by Status:</label>
+                    <select id="statusFilter">
+                        <option value="all">All Tickets</option>
+                        <option value="open">Open</option>
+                        <option value="in-progress">In Progress</option>
+                        <option value="resolved">Resolved</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="searchTicket">Search:</label>
+                    <input type="text" id="searchTicket" placeholder="Search by ticket number or keywords">
+                </div>
+            </div>
+            
+            <div class="ticket-list" id="ticketList">
+                <!-- Ticket items will be dynamically populated here -->
+                <div class="no-tickets-message">No tickets found.</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Ticket Detail Modal -->
+    <div id="ticketDetailModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <div id="ticketDetailContent">
+                <!-- Ticket details will be populated here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Profile Section -->
+    <section id="profile" class="dashboard-section">
+        <div class="container">
+            <h2>My Profile</h2>
+            
+            <div class="profile-container">
+                <div class="profile-info">
+                    <form id="profileForm">
+                        <div class="form-group">
+                            <label for="fullName">Full Name</label>
+                            <input type="text" id="fullName" name="fullName" placeholder="Your full name">
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" name="email" placeholder="Your email address">
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone Number</label>
+                            <input type="tel" id="phone" name="phone" placeholder="Your phone number">
+                        </div>
+                        <div class="form-group">
+                            <button type="button" class="btn" id="updateProfileBtn">Update Profile</button>
+                        </div>
+                    </form>
+                </div>
+                
+                <div class="change-password">
+                    <h3>Change Password</h3>
+                    <form id="passwordForm">
+                        <div class="form-group">
+                            <label for="currentPassword">Current Password</label>
+                            <input type="password" id="currentPassword" name="currentPassword" placeholder="Enter current password">
+                        </div>
+                        <div class="form-group">
+                            <label for="newPassword">New Password</label>
+                            <input type="password" id="newPassword" name="newPassword" placeholder="Enter new password">
+                        </div>
+                        <div class="form-group">
+                            <label for="confirmPassword">Confirm New Password</label>
+                            <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm new password">
+                        </div>
+                        <div class="form-group">
+                            <button type="button" class="btn" id="changePasswordBtn">Change Password</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Section -->
     <footer class="footer">
         <div class="container">
-            <p>&copy; 2024 Agent Ticket Management. All Rights Reserved.</p>
+            <p>&copy; 2024 Customer Support Ticket System. All Rights Reserved.</p>
         </div>
     </footer>
 
-    <!-- JavaScript for Ticket Management -->
+    <!-- JavaScript for Agent Dashboard -->
     <script>
-        // Sample ticket data assigned to the agent
-        const tickets = [
-            { id: 101, type: "bus", issue: "Delay", description: "Bus was late by 45 minutes", status: "pending", response: "" },
-            { id: 102, type: "train", issue: "Lost Item", description: "Lost bag in the train", status: "inProgress", response: "" },
-            { id: 103, type: "bus", issue: "Overcrowding", description: "Too many passengers", status: "resolved", response: "Issue resolved by increasing fleet size" },
-        ];
+        // Tab Navigation
+        const navItems = document.querySelectorAll('.nav-item');
+        const dashboardSections = document.querySelectorAll('.dashboard-section');
 
-        const ticketList = document.getElementById("ticketList");
+        navItems.forEach(item => {
+            item.addEventListener('click', function() {
+                // Remove active class from all tabs and sections
+                navItems.forEach(tab => tab.classList.remove('active'));
+                dashboardSections.forEach(section => section.classList.remove('active'));
+                
+                // Add active class to clicked tab
+                this.classList.add('active');
+                
+                // Show corresponding section
+                const targetSection = document.getElementById(this.getAttribute('data-target'));
+                if (targetSection) {
+                    targetSection.classList.add('active');
+                }
+            });
+        });
 
-        function loadTickets() {
-            ticketList.innerHTML = "";
+        // Filter tickets by status
+        document.getElementById('statusFilter').addEventListener('change', function() {
+            const status = this.value;
+            const tickets = document.querySelectorAll('.ticket-item');
+            
             tickets.forEach(ticket => {
-                const row = `<tr>
-                    <td>${ticket.id}</td>
-                    <td>${ticket.type}</td>
-                    <td>${ticket.issue}</td>
-                    <td>${ticket.description}</td>
-                    <td>
-                        <select class="status-dropdown" data-id="${ticket.id}">
-                            <option value="pending" ${ticket.status === "pending" ? "selected" : ""}>Pending</option>
-                            <option value="inProgress" ${ticket.status === "inProgress" ? "selected" : ""}>In Progress</option>
-                            <option value="resolved" ${ticket.status === "resolved" ? "selected" : ""}>Resolved</option>
-                        </select>
-                    </td>
-                    <td>
-                        <textarea class="response-box" data-id="${ticket.id}" placeholder="Add response...">${ticket.response}</textarea>
-                    </td>
-                    <td>
-                        <button class="save-btn" data-id="${ticket.id}"><i class="fa fa-save"></i> Save</button>
-                    </td>
-                </tr>`;
-                ticketList.innerHTML += row;
+                if (status === 'all' || ticket.getAttribute('data-status') === status) {
+                    ticket.style.display = 'block';
+                } else {
+                    ticket.style.display = 'none';
+                }
             });
+        });
 
-            // Add event listeners to update status and response
-            document.querySelectorAll(".status-dropdown").forEach(select => {
-                select.addEventListener("change", updateStatus);
+        // Search tickets
+        document.getElementById('searchTicket').addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            const tickets = document.querySelectorAll('.ticket-item');
+            
+            tickets.forEach(ticket => {
+                const ticketText = ticket.textContent.toLowerCase();
+                if (ticketText.includes(searchTerm)) {
+                    ticket.style.display = 'block';
+                } else {
+                    ticket.style.display = 'none';
+                }
             });
+        });
 
-            document.querySelectorAll(".save-btn").forEach(button => {
-                button.addEventListener("click", saveResponse);
+        // Open ticket detail modal
+        function openTicketDetail(ticketId) {
+            const modal = document.getElementById('ticketDetailModal');
+            const content = document.getElementById('ticketDetailContent');
+            
+            // Generate dummy details for demo
+            const status = ['Open', 'In Progress', 'Resolved'][Math.floor(Math.random() * 3)];
+            const transportType = Math.random() > 0.5 ? 'Bus' : 'Train';
+            const date = new Date().toLocaleDateString();
+            
+            const detailHTML = `
+                <h3>Ticket #${ticketId}</h3>
+                <div class="ticket-detail-header">
+                    <span class="ticket-detail-status status-${status.toLowerCase().replace(' ', '-')}">Status: ${status}</span>
+                    <span class="ticket-detail-date">Submitted: ${date}</span>
+                </div>
+                <div class="ticket-detail-body">
+                    <div class="detail-section">
+                        <h4>Issue Details</h4>
+                        <p><strong>Transport Type:</strong> ${transportType}</p>
+                        <p><strong>Issue Type:</strong> ${transportType === 'Bus' ? 'Bus Delay' : 'Train Cancellation'}</p>
+                        <p><strong>Date of Incident:</strong> ${date}</p>
+                        <p><strong>Description:</strong> This is a sample ticket description for demonstration purposes. In a real application, this would contain the actual details of the reported issue.</p>
+                    </div>
+                    <div class="detail-section">
+                        <h4>Conversation</h4>
+                        <div class="conversation-thread">
+                            <div class="message customer-message">
+                                <div class="message-header">
+                                    <span class="message-sender">Customer</span>
+                                    <span class="message-time">${date}</span>
+                                </div>
+                                <div class="message-body">
+                                    Initial report submitted.
+                                </div>
+                            </div>
+                            ${status !== 'Open' ? `
+                            <div class="message agent-message">
+                                <div class="message-header">
+                                    <span class="message-sender">You</span>
+                                    <span class="message-time">${date}</span>
+                                </div>
+                                <div class="message-body">
+                                    Thank you for your report. We're looking into this issue and will update you shortly.
+                                </div>
+                            </div>
+                            ` : ''}
+                        </div>
+                        <div class="reply-section">
+                            <h5>Add Reply</h5>
+                            <textarea class="reply-textarea" placeholder="Type your message here..."></textarea>
+                            <button class="btn reply-btn">Send Reply</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            content.innerHTML = detailHTML;
+            modal.style.display = 'block';
+            
+            // Add event listener to close modal
+            document.querySelector('.close-modal').addEventListener('click', function() {
+                modal.style.display = 'none';
+            });
+            
+            // Close modal when clicking outside
+            window.addEventListener('click', function(event) {
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                }
             });
         }
 
-        function updateStatus(event) {
-            const ticketId = event.target.dataset.id;
-            const newStatus = event.target.value;
-            const ticket = tickets.find(t => t.id == ticketId);
-            if (ticket) ticket.status = newStatus;
-            loadTickets();
+        // Update ticket counters
+        function updateTicketCounters() {
+            // For demo purposes, we'll use random numbers
+            document.getElementById('totalTickets').textContent = Math.floor(Math.random() * 10) + 1;
+            document.getElementById('openTickets').textContent = Math.floor(Math.random() * 3) + 1;
+            document.getElementById('inProgressTickets').textContent = Math.floor(Math.random() * 3);
+            document.getElementById('resolvedTickets').textContent = Math.floor(Math.random() * 5);
+            
+            // Add some recent activity
+            const recentActivity = document.getElementById('recentActivity');
+            const activities = [
+                'Ticket #T1234 has been updated by you.',
+                'Ticket #T5678 status changed to "Resolved".',
+                'You replied to ticket #T9012.'
+            ];
+            
+            let activityHTML = '';
+            activities.forEach(activity => {
+                activityHTML += `<div class="activity-item">${activity}</div>`;
+            });
+            
+            recentActivity.innerHTML = activityHTML;
         }
 
-        function saveResponse(event) {
-            const ticketId = event.target.dataset.id;
-            const responseBox = document.querySelector(`textarea[data-id="${ticketId}"]`);
-            const ticket = tickets.find(t => t.id == ticketId);
-            if (ticket) ticket.response = responseBox.value;
-            alert("Response saved successfully!");
+        // Profile update functionality
+        document.getElementById('updateProfileBtn').addEventListener('click', function() {
+            alert('Profile updated successfully!');
+        });
+
+        // Password change functionality
+        document.getElementById('changePasswordBtn').addEventListener('click', function() {
+            const newPass = document.getElementById('newPassword').value;
+            const confirmPass = document.getElementById('confirmPassword').value;
+            
+            if (newPass !== confirmPass) {
+                alert('New passwords do not match!');
+            } else {
+                alert('Password changed successfully!');
+                document.getElementById('passwordForm').reset();
+            }
+        });
+
+        // Initialize the dashboard with some demo data
+        window.addEventListener('load', function() {
+            // Set username
+            document.getElementById('username').textContent = 'Agent Sakthi';
+            
+            // Add some dummy tickets
+            for (let i = 0; i < 5; i++) {
+                addDummyTicket();
+            }
+            
+            // Update counters
+            updateTicketCounters();
+            
+            // Set some profile data
+            document.getElementById('fullName').value = 'Agent sakthi';
+            document.getElementById('email').value = 'agent.sakthi@gmail.com';
+            document.getElementById('phone').value = '9840223670';
+        });
+
+        // For demonstration: Add a dummy ticket to the list
+        function addDummyTicket() {
+            const ticketList = document.getElementById('ticketList');
+            const noTicketsMsg = document.querySelector('.no-tickets-message');
+            
+            if (noTicketsMsg) {
+                noTicketsMsg.style.display = 'none';
+            }
+            
+            const ticketId = 'T' + Math.floor(Math.random() * 10000);
+            const transportType = Math.random() > 0.5 ? 'bus' : 'train';
+            const status = ['open', 'in-progress', 'resolved'][Math.floor(Math.random() * 3)];
+            const statusText = status.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase());
+            
+            const ticketHTML = `
+                <div class="ticket-item" data-ticket-id="${ticketId}" data-status="${status}">
+                    <div class="ticket-header">
+                        <span class="ticket-number">Ticket #${ticketId}</span>
+                        <span class="ticket-status status-${status}">${statusText}</span>
+                    </div>
+                    <div class="ticket-content">
+                        <h4 class="ticket-title">${transportType === 'bus' ? 'Bus' : 'Train'} Issue Report</h4>
+                        <p class="ticket-description">This is a sample ticket description for demonstration purposes.</p>
+                        <div class="ticket-meta">
+                            <span class="ticket-date"><i class="far fa-calendar-alt"></i> ${new Date().toLocaleDateString()}</span>
+                            <span class="ticket-transport"><i class="fas fa-${transportType}"></i> ${transportType === 'bus' ? 'Bus' : 'Train'}</span>
+                        </div>
+                    </div>
+                    <div class="ticket-actions">
+                        <button class="btn-view" data-ticket-id="${ticketId}"><i class="fas fa-eye"></i> View</button>
+                        <button class="btn-update-status" data-ticket-id="${ticketId}"><i class="fas fa-edit"></i> Update Status</button>
+                    </div>
+                </div>
+            `;
+            
+            ticketList.insertAdjacentHTML('afterbegin', ticketHTML);
+            
+            // Add event listener to the view button
+            document.querySelector(`.btn-view[data-ticket-id="${ticketId}"]`).addEventListener('click', function() {
+                openTicketDetail(this.getAttribute('data-ticket-id'));
+            });
+
+            // Add event listener to the update status button
+            document.querySelector(`.btn-update-status[data-ticket-id="${ticketId}"]`).addEventListener('click', function() {
+                updateTicketStatus(this.getAttribute('data-ticket-id'));
+            });
         }
 
-        // Load tickets on page load
-        loadTickets();
+        // Update ticket status
+        function updateTicketStatus(ticketId) {
+            const newStatus = prompt('Update ticket status (Open, In Progress, Resolved):');
+            if (newStatus && ['Open', 'In Progress', 'Resolved'].includes(newStatus)) {
+                const ticket = document.querySelector(`.ticket-item[data-ticket-id="${ticketId}"]`);
+                const statusSpan = ticket.querySelector('.ticket-status');
+                statusSpan.textContent = newStatus;
+                statusSpan.className = `ticket-status status-${newStatus.toLowerCase().replace(' ', '-')}`;
+                ticket.setAttribute('data-status', newStatus.toLowerCase().replace(' ', '-'));
+                alert('Ticket status updated successfully!');
+            } else {
+                alert('Invalid status entered.');
+            }
+        }
+        document.getElementById('logoutBtn').addEventListener('click', function() { 
+             window.location.href = 'agentlogin.html';
+});
     </script>
-
 </body>
 </html>

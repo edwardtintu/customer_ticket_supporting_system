@@ -3,133 +3,330 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard - Ticket Management</title>
+    <title>Admin Dashboard - Support Ticket Management System</title>
+    <!-- External Stylesheet -->
     <link rel="stylesheet" href="admin_dash.css">
+    <!-- Font Awesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 </head>
 <body>
-
-    <!-- Header -->
+    <!-- Header Section -->
     <header class="header">
         <div class="container">
-            <h1>Admin Dashboard - Ticket Management</h1>
-            <p>Manage and resolve transport-related issues efficiently.</p>
+            <h1>Transport Support Management System</h1>
+            <p>Comprehensive Administration & Monitoring</p>
+            <div class="user-info">
+                <span><i class="fas fa-user-shield"></i> Welcome, <span id="adminUsername">Admin</span></span>
+                <button id="logoutBtn" class="btn-logout"><i class="fas fa-sign-out-alt"></i> Logout</button>
+            </div>
         </div>
     </header>
 
-    <!-- Ticket Management Panel -->
-    <section class="admin-panel">
+    <!-- Navigation Tabs -->
+    <nav class="dashboard-nav">
         <div class="container">
-            <h2>Manage Tickets</h2>
+            <ul class="nav-tabs">
+                <li class="nav-item active" data-target="dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</li>
+                <li class="nav-item" data-target="customer-management"><i class="fas fa-users"></i> Customer Management</li>
+                <li class="nav-item" data-target="agent-management"><i class="fas fa-user-tie"></i> Agent Management</li>
+                <li class="nav-item" data-target="ticket-overview"><i class="fas fa-ticket-alt"></i> Ticket Overview</li>
+                <li class="nav-item" data-target="system-settings"><i class="fas fa-cogs"></i> System Settings</li>
+            </ul>
+        </div>
+    </nav>
 
-            <!-- Filter Options -->
-            <div class="filters">
-                <label for="filterType">Filter by Transport Type:</label>
-                <select id="filterType">
-                    <option value="all">All</option>
-                    <option value="bus">Bus</option>
-                    <option value="train">Train</option>
-                </select>
-
-                <label for="filterStatus">Filter by Status:</label>
-                <select id="filterStatus">
-                    <option value="all">All</option>
-                    <option value="pending">Pending</option>
-                    <option value="inProgress">In Progress</option>
-                    <option value="resolved">Resolved</option>
-                </select>
+    <!-- Dashboard Section -->
+    <section id="dashboard" class="dashboard-section active">
+        <div class="container1">
+            <h2>System Dashboard</h2>
+            
+            <div class="stats-container">
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-users"></i></div>
+                    <div class="stat-info">
+                        <h3>Total Customers</h3>
+                        <p id="totalCustomers">1,100</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-user-tie"></i></div>
+                    <div class="stat-info">
+                        <h3>Total Agents</h3>
+                        <p id="totalAgents">45</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-ticket-alt"></i></div>
+                    <div class="stat-info">
+                        <h3>Total Tickets</h3>
+                        <p id="totalTickets">4,578</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-chart-pie"></i></div>
+                    <div class="stat-info">
+                        <h3>Ticket Resolution Rate</h3>
+                        <p id="resolutionRate">89%</p>
+                    </div>
+                </div>
             </div>
-
-            <!-- Ticket List Table -->
-            <table class="ticket-table">
-                <thead>
-                    <tr>
-                        <th>Ticket ID</th>
-                        <th>Transport Type</th>
-                        <th>Issue Type</th>
-                        <th>Description</th>
-                        <th>Status</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody id="ticketList">
-                    <!-- Dynamic Ticket Entries Here -->
-                </tbody>
-            </table>
+            
+            <div class="dashboard-charts">
+                <div class="chart-container">
+                    <h3>Monthly Ticket Volume</h3>
+                    <div id="monthlyTicketChart" class="chart"></div>
+                </div>
+                <div class="chart-container">
+                    <h3>Ticket Status Distribution</h3>
+                    <div id="ticketStatusChart" class="chart"></div>
+                </div>
+            </div>
         </div>
     </section>
 
-    <!-- Footer -->
+    <!-- Customer Management Section -->
+    <section id="customer-management" class="dashboard-section">
+        <div class="container1">
+            <h2>Customer Management</h2>
+            
+            <div class="user-management-controls">
+                <div class="search-group">
+                    <input type="text" id="customerSearch" placeholder="Search customers...">
+                    <button class="btn btn-add-user" id="addCustomerBtn">
+                        <i class="fas fa-user-plus"></i> Add New Customer
+                    </button>
+                </div>
+            </div>
+            
+            <div class="user-list" id="customerList">
+                <div class="user-item">
+                    <div class="user-info">
+                        <h4>Rahul Kumar</h4>
+                        <p>rahul@example.com</p>
+                        <span class="user-contact">+91 9876543210</span>
+                    </div>
+                    <div class="user-actions">
+                        <button class="btn btn-view">View Details</button>
+                        <button class="btn btn-delete">Remove</button>
+                    </div>
+                </div>
+                <div class="user-item">
+                    <div class="user-info">
+                        <h4>Priya Sharma</h4>
+                        <p>priya@example.com</p>
+                        <span class="user-contact">+91 8765432109</span>
+                    </div>
+                    <div class="user-actions">
+                        <button class="btn btn-view">View Details</button>
+                        <button class="btn btn-delete">Remove</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Agent Management Section -->
+    <section id="agent-management" class="dashboard-section">
+        <div class="container1">
+            <h2>Agent Management</h2>
+            
+            <div class="user-management-controls">
+                <div class="search-group">
+                    <input type="text" id="agentSearch" placeholder="Search agents...">
+                    <button class="btn btn-add-user" id="addAgentBtn">
+                        <i class="fas fa-user-plus"></i> Add New Agent
+                    </button>
+                </div>
+            </div>
+            
+            <div class="user-list" id="agentList">
+                <div class="user-item">
+                    <div class="user-info">
+                        <h4>Sakthi Vel</h4>
+                        <p>sakthi@support.com</p>
+                        <span class="user-department">Customer Support</span>
+                    </div>
+                    <div class="user-actions">
+                        <button class="btn btn-edit">Edit Profile</button>
+                        <button class="btn btn-delete">Remove</button>
+                    </div>
+                </div>
+                <div class="user-item">
+                    <div class="user-info">
+                        <h4>Edward Johnson</h4>
+                        <p>edward@support.com</p>
+                        <span class="user-department">Technical Support</span>
+                    </div>
+                    <div class="user-actions">
+                        <button class="btn btn-edit">Edit Profile</button>
+                        <button class="btn btn-delete">Remove</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Ticket Overview Section -->
+    <section id="ticket-overview" class="dashboard-section">
+        <div class="container1">
+            <h2>Ticket Management</h2>
+            
+            <div class="ticket-filters">
+                <div class="filter-group">
+                    <label for="ticketStatusFilter">Status:</label>
+                    <select id="ticketStatusFilter">
+                        <option value="all">All Tickets</option>
+                        <option value="open">Open</option>
+                        <option value="in-progress">In Progress</option>
+                        <option value="resolved">Resolved</option>
+                        <option value="escalated">Escalated</option>
+                    </select>
+                </div>
+                <div class="search-group">
+                    <input type="text" id="ticketSearch" placeholder="Search tickets...">
+                </div>
+            </div>
+            
+            <div class="ticket-list" id="ticketList">
+                <div class="ticket-item">
+                    <div class="ticket-header">
+                        <h3>#4577 - Bus Route Delay</h3>
+                        <span class="ticket-status open">Open</span>
+                    </div>
+                    <div class="ticket-details">
+                        <p><strong>Customer:</strong> Rahul Kumar</p>
+                        <p><strong>Description:</strong> Experienced significant delay on Route 42</p>
+                        <p><strong>Assigned To:</strong> Sakthi Vel</p>
+                    </div>
+                    <div class="ticket-actions">
+                        <button class="btn btn-view">View Details</button>
+                        <button class="btn btn-assign">Reassign</button>
+                    </div>
+                </div>
+                <div class="ticket-item">
+                    <div class="ticket-header">
+                        <h3>#4576 - Ticket Refund Issue</h3>
+                        <span class="ticket-status in-progress">In Progress</span>
+                    </div>
+                    <div class="ticket-details">
+                        <p><strong>Customer:</strong> Priya Sharma</p>
+                        <p><strong>Description:</strong> Refund not processed for cancelled train ticket</p>
+                        <p><strong>Assigned To:</strong> Edward Johnson</p>
+                    </div>
+                    <div class="ticket-actions">
+                        <button class="btn btn-view">View Details</button>
+                        <button class="btn btn-assign">Reassign</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- System Settings Section -->
+    <section id="system-settings" class="dashboard-section">
+        <div class="container">
+            <h2>System Configuration</h2>
+            
+            <div class="settings-container">
+                <div class="settings-group">
+                    <h3>General Settings</h3>
+                    <div class="form-group">
+                        <label for="systemName">System Name</label>
+                        <input type="text" id="systemName" value="Transport Support System">
+                    </div>
+                    <div class="form-group">
+                        <label for="supportEmail">Support Email</label>
+                        <input type="email" id="supportEmail" value="support@transport.com">
+                    </div>
+                </div>
+                
+                <div class="settings-group">
+                    <h3>Change Password</h3>
+                    <div class="form-group">
+                        <label for="currentPassword">Current Password</label>
+                        <input type="password" id="currentPassword" placeholder="Enter current password">
+                    </div>
+                    <div class="form-group">
+                        <label for="newPassword">New Password</label>
+                        <input type="password" id="newPassword" placeholder="Enter new password">
+                    </div>
+                    <div class="form-group">
+                        <label for="confirmPassword">Confirm New Password</label>
+                        <input type="password" id="confirmPassword" placeholder="Confirm new password">
+                    </div>
+                </div>
+                
+                <div class="settings-group">
+                    <h3>Security Settings</h3>
+                    <div class="form-group">
+                        <label for="passwordPolicy">Password Complexity</label>
+                        <select id="passwordPolicy">
+                            <option value="low">Low</option>
+                            <option value="medium" selected>Medium</option>
+                            <option value="high">High</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="twoFactorAuth">Two-Factor Authentication</label>
+                        <select id="twoFactorAuth">
+                            <option value="disabled">Disabled</option>
+                            <option value="optional">Optional</option>
+                            <option value="required">Required</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <button class="btn btn-save-settings" id="saveSystemSettings">
+                        <i class="fas fa-save"></i> Save Settings
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Section -->
     <footer class="footer">
         <div class="container">
-            <p>&copy; 2024 Admin Ticket Management. All Rights Reserved.</p>
+            <p>&copy; 2024 Transport Support System. All Rights Reserved.</p>
         </div>
     </footer>
 
-    <!-- JavaScript for Ticket Management -->
     <script>
-        // Sample ticket data
-        const tickets = [
-            { id: 1, type: "bus", issue: "Delay", description: "Bus was late by 45 minutes", status: "pending" },
-            { id: 2, type: "train", issue: "Lost Item", description: "Lost bag in the train", status: "inProgress" },
-            { id: 3, type: "bus", issue: "Overcrowding", description: "Too many passengers", status: "resolved" },
-        ];
+        // Tab Navigation
+        const navItems = document.querySelectorAll('.nav-item');
+        const dashboardSections = document.querySelectorAll('.dashboard-section');
 
-        const ticketList = document.getElementById("ticketList");
-
-        function loadTickets() {
-            ticketList.innerHTML = "";
-            tickets.forEach(ticket => {
-                const row = `<tr>
-                    <td>${ticket.id}</td>
-                    <td>${ticket.type}</td>
-                    <td>${ticket.issue}</td>
-                    <td>${ticket.description}</td>
-                    <td>
-                        <select class="status-dropdown" data-id="${ticket.id}">
-                            <option value="pending" ${ticket.status === "pending" ? "selected" : ""}>Pending</option>
-                            <option value="inProgress" ${ticket.status === "inProgress" ? "selected" : ""}>In Progress</option>
-                            <option value="resolved" ${ticket.status === "resolved" ? "selected" : ""}>Resolved</option>
-                        </select>
-                    </td>
-                    <td>
-                        <button class="delete-btn" data-id="${ticket.id}"><i class="fa fa-trash"></i> Delete</button>
-                    </td>
-                </tr>`;
-                ticketList.innerHTML += row;
+        navItems.forEach(item => {
+            item.addEventListener('click', function() {
+                navItems.forEach(tab => tab.classList.remove('active'));
+                dashboardSections.forEach(section => section.classList.remove('active'));
+                
+                this.classList.add('active');
+                
+                const targetSection = document.getElementById(this.getAttribute('data-target'));
+                if (targetSection) {
+                    targetSection.classList.add('active');
+                }
             });
+        });
 
-            // Add event listeners to update status
-            document.querySelectorAll(".status-dropdown").forEach(select => {
-                select.addEventListener("change", updateStatus);
-            });
+        // Event Listeners
+        document.getElementById('saveSystemSettings').addEventListener('click', function() {
+            alert('System settings saved successfully!');
+        });
 
-            // Add event listeners to delete ticket
-            document.querySelectorAll(".delete-btn").forEach(button => {
-                button.addEventListener("click", deleteTicket);
-            });
-        }
+        document.getElementById('addCustomerBtn').addEventListener('click', function() {
+            alert('Add New Customer modal/form would be triggered here');
+        });
 
-        function updateStatus(event) {
-            const ticketId = event.target.dataset.id;
-            const newStatus = event.target.value;
-            const ticket = tickets.find(t => t.id == ticketId);
-            if (ticket) ticket.status = newStatus;
-            loadTickets();
-        }
+        document.getElementById('addAgentBtn').addEventListener('click', function() {
+            alert('Add New Agent modal/form would be triggered here');
+        });
 
-        function deleteTicket(event) {
-            const ticketId = event.target.dataset.id;
-            const index = tickets.findIndex(t => t.id == ticketId);
-            if (index !== -1) {
-                tickets.splice(index, 1);
-                loadTickets();
-            }
-        }
-
-        // Load tickets on page load
-        loadTickets();
+        document.getElementById('logoutBtn').addEventListener('click', function() { 
+            window.location.href = 'adminlogin.html';
+        });
     </script>
-
 </body>
 </html>

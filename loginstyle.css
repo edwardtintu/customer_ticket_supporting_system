@@ -11,57 +11,21 @@ body {
     min-height: 100vh;
 }
 
-.container {
-    width: 90%;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-}
 
 /* Header Styles */
 .header {
     background: rgba(0, 0, 0, 0.7);
-    padding: 60px 0;
+    padding: 5px 0;
     text-align: center;
     border-bottom: 2px solid #007bff;
-}
-
-.header h1 {
-    font-size: 3rem;
-    font-weight: 700;
-    margin: 0;
-    color: #fff;
-}
-
-.header p {
-    font-size: 1.2rem;
-    margin: 10px 0 0;
-    opacity: 0.9;
-    color: #ddd;
+    height: 120px;
 }
 
 /* Login Section Styles */
 .login-section {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 40px 0;
-}
-
-.login-section h2 {
-    font-size: 2.5rem;
-    font-weight: 700;
-    margin-bottom: 20px;
-    color: #fff;
-    text-align: center;
-}
-
-.login-section p {
-    font-size: 1.1rem;
-    margin-bottom: 30px;
-    color: #ddd;
-    text-align: center;
+    display: grid;
+    place-items: center;
+    height: 530px;
 }
 
 .login-form {
@@ -73,6 +37,7 @@ body {
     width: 100%;
     backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.2);
+    height: 300px;
 }
 
 .login-form .form-group {
@@ -137,7 +102,7 @@ body {
 }
 
 .register-link a {
-    color: #007bff;
+    color: #ff005d;
     text-decoration: none;
     font-weight: 600;
     transition: color 0.3s ease;

@@ -27,7 +27,7 @@
 
             <!-- Login Form -->
             <div class="login-form">
-                <form id="userLoginForm">
+                <form id="userLoginForm" action="login_process.php" method="POST">
                     <div class="form-group">
                         <label for="username">Username</label>
                         <input type="text" id="username" name="username" placeholder="Enter your username" required>
@@ -36,6 +36,13 @@
                         <label for="password">Password</label>
                         <input type="password" id="password" name="password" placeholder="Enter your password" required>
                     </div>
+                    <?php if (isset($_GET['error'])): ?>
+                        <div id="error-message" class="error-message" style="color: red; display: block;">
+                            <?php echo htmlspecialchars($_GET['error']); ?>
+                        </div>
+                    <?php else: ?>
+                        <div id="error-message" class="error-message" style="color: red; display: none;"></div>
+                    <?php endif; ?>
                     <button type="submit" class="btn">
                         <i class="fas fa-sign-in-alt"></i> Login
                     </button>
@@ -59,13 +66,19 @@
     <!-- JavaScript for Form Validation -->
     <script>
         document.getElementById('userLoginForm').addEventListener('submit', function(event) {
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value.trim();
+            const errorMessageElement = document.getElementById('error-message');
 
-            // Basic validation
+            // Clear previous error messages
+            errorMessageElement.textContent = '';
+            errorMessageElement.style.display = 'none';
+
+            // Basic validation rules
             if (!username || !password) {
-                alert('Please fill in all fields.');
                 event.preventDefault();
+                errorMessageElement.textContent = 'Please fill in all fields.';
+                errorMessageElement.style.display = 'block';
             }
         });
     </script>
